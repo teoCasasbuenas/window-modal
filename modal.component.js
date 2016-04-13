@@ -1,22 +1,24 @@
 var Instances = (function($) {
     function Instances() {
         var instancias = [];
-        this.getInstancias = function (){
-        	return instancias;
+        this.getInstancias = function() {
+            return instancias;
         };
-        this.setInstancia = function (modal){
-        	var id = "modal" + Date.now();
-        	modal.ID = id;
-        	instancias.push(modal);
+        this.setInstancia = function(modal) {
+            var id = "modal" + Date.now();
+            modal.ID = id;
+            instancias.push(modal);
         };
-        this.getInstacia = function (id){
-        	var instancia = $.grep(instancias, function (e){return e.ID == id});
-        	return instancia[0];
+        this.getInstacia = function(id) {
+            var instancia = $.grep(instancias, function(e) {
+                return e.ID == id
+            });
+            return instancia[0];
         }
     }
 
     Instances.prototype = {
-    	constructor: Instances
+        constructor: Instances
     }
     return Instances;
 })(jQuery);
@@ -56,17 +58,25 @@ var Modal = (function($, instancias) {
             modalHead.find(".glm-ventana__cabecera--titulo").html(tituloModal);
 
             that.modalInstance = modal;
+
             //Agregamos opciones css al modal
             modal.css({
                 "width": opciones.ancho + opciones.unidadMedida,
                 "height": opciones.alto + opciones.unidadMedida,
                 "backgroundColor": opciones.backgroundColor
             });
+
             //Agregamos los elementos al modal
             modal.append(modalHead);
 
-            $("#" + idContenedor).addClass('glm-ventana__parent').append(that.modalInstance); //TODO: Obtener el contenedor desde el usuario
+            modal.dblclick(function(){
+            	if($(this).hasClass('minimizada')){
+            		$(this).removeClass('minimizada');
+            	}
+            });
 
+            $("#" + idContenedor).addClass('glm-ventana__parent').append(that.modalInstance); //TODO: Obtener el contenedor desde el usuario
+            
             return modal;
         }
 
@@ -82,11 +92,14 @@ var Modal = (function($, instancias) {
             botonCerrar.on("click", function() {
                 $t.destroy();
             });
-            botonMinimizar.on("click", function (){
-
+            botonMinimizar.on("click", function() {
+                $t.minimizar();
             });
 
+
+
             //Agregamos los botones al contenedor
+            cabeceraContenedorBotones.append(botonMinimizar);
             cabeceraContenedorBotones.append(botonCerrar);
 
             //Agregamos los elementos a la cabecera
@@ -106,6 +119,10 @@ var Modal = (function($, instancias) {
         this.destruir = function() {
             this.modalInstance.remove();
         }
+
+        this.minimizar = function() {
+            this.modalInstance.addClass('minimizada');
+        }
     }
 
     Modal.prototype = {
@@ -119,7 +136,7 @@ var Modal = (function($, instancias) {
         },
         dragModal: function() {
             var instanciaModal = this.modalInstance,
-            	modal = $(this.modalInstance),
+                modal = $(this.modalInstance),
                 contenedor = this.modalInstance.closest('.glm-ventana__parent'),
                 cabecera = this.modalInstance.find(".glm-ventana__cabecera--titulo"),
                 opcionesDraggable = {
@@ -130,7 +147,7 @@ var Modal = (function($, instancias) {
                     stop: function(event, ui) {
                         modal.css("z-index", 101);
                         var modalInst = instancias.getInstacia(instanciaModal.ID);
-                        console.log(this);
+
                     }
                 };
             $(this.modalInstance).draggable(opcionesDraggable);
