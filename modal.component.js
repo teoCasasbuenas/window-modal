@@ -34,7 +34,7 @@ var Modal = (function($) {
             //Agregamos los elementos al modal
             modal.append(modalHead);
 
-            $("#contenedor").addClass('glm-ventana__parent').append(that.modalInstance);
+            $("#contenedor").addClass('glm-ventana__parent').append(that.modalInstance); //TODO: Obtener el contenedor desde el usuario
         }
 
         this.__createHead = function() {
@@ -78,15 +78,37 @@ var Modal = (function($) {
         destroy: function() {
             this.destruir();
         },
-
         dragModal: function() {
+            let modal = $(this.modalInstance),
+                contenedor = this.modalInstance.closest('.glm-ventana__parent'),
+                cabecera = this.modalInstance.find("header"),
+                opcionesDraggable = {
+                    handle: cabecera,
+                    containment: contenedor,
+                    drag: function(event, ui) {
+                    },
+                    start: function(event, ui) {
+                    },
+                    stop: function(event, ui) {
+                        modal.css("z-index", 101);
+                    }
+                };
+            $(this.modalInstance).draggable(opcionesDraggable);
+            modal.on("mousedown", function() {
+                $(this).css("z-index", 9999);
+                $(".glm-ventana").not(modal).each(function() {
+                    $(this).css("z-index", 100);
+                });
+            });
+        },
+        dragModalDev: function() {
             let cabecera = this.modalInstance.find("header"),
                 modalRaw = this.modalInstance.get()[0];
 
             var seleccionado = null;
 
             cabecera.on("dragstart", function(e) {
-            	console.log(e);
+                console.log(e);
                 __dragInit(modalRaw, e)
                 cabecera.get()[0].onmousemove = __moverElemento;
 
