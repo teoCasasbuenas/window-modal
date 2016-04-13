@@ -21,7 +21,7 @@
         width: 100%;
         }
         .font0 {
-        font-size: 0 !important;
+        font-size: 0;
         }
         .inline-block{
         display: inline-block;
@@ -60,31 +60,37 @@
         cursor: pointer;
         display: table-cell;
         font-size: 10px;
-        height: 16px;
+        height: 12px;
         margin: 0;
         padding: 0;
         text-align: center;
         vertical-align: middle;
-        width: 16px;
+        width: 12px;
         }
         .glm-ventana__cabecera--contenedor-botones__boton:focus{
         outline: none;
         }
-        #contenedor{
+        #contenedor, #contenedor2{
         position: relative;
-        width: 800px;
+        width: 50%;
         height: 100%;
+        }
+        .titulo{
+            font-size: initial;
         }
         </style>
     </head>
-    <body>
-        <div id="contenedor">
-            <h3>Modal window</h3>
+    <body class="font0">
+        <div id="contenedor" class="inline-block">
+            <h3 class="titulo">Contenedor 1</h3>
+        </div>
+        <div id="contenedor2" class="inline-block">
+            <h3 class="titulo">Contenedor 2</h3>
         </div>
         <script type="text/javascript">
-        var modal1 = new Modal("Ventana 1"),
-            modal2 = new Modal("Ventana 2"),
-            modal3 = new Modal("Ventana 3");
+        var modal1 = new Modal("Ventana 1", "contenedor"),
+            modal2 = new Modal("Ventana 2", "contenedor"),
+            modal3 = new Modal("Ventana 3", "contenedor2");
         modal1.show();
         modal1.dragModal();
         modal2.show();
