@@ -1,0 +1,117 @@
+html {
+    height: 100%;
+}
+
+body {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.font0 {
+    font-size: 0;
+}
+
+.inline-block {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.ventanas {
+    border: 1px solid #000;
+    border-radius: 3px;
+    left: 50px;
+    overflow: hidden;
+    position: absolute;
+    top: 100px;
+}
+
+.mini__ventana{
+    transform: scale(0.35);
+    position: initial;
+    transform-origin: 0 0;
+}
+
+.mini__ventana__label{
+    font-size: 16px;
+    text-align: center;
+}
+
+.ventanas__cabecera {
+    background: #CCC;
+    border-bottom: 1px solid #000;
+    height: 16px;
+    padding: 4px;
+}
+
+.ventanas__cabecera--titulo {
+    font-size: initial;
+    width: calc(100% - 40px);
+}
+
+.ventanas__cabecera--contenedor-botones {
+    background: transparent;
+    height: 100%;
+    text-align: right;
+    width: 40px;
+}
+
+.cerrar-modal {
+    background: red;
+}
+
+.ventanas__cabecera--contenedor-botones__boton {
+    border: none;
+    border-radius: 100%;
+    box-shadow: none;
+    color: #FFF;
+    cursor: pointer;
+    display: table-cell;
+    font-size: 10px;
+    height: 12px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    vertical-align: middle;
+    width: 12px;
+}
+
+.ventanas__cabecera--contenedor-botones__boton:focus {
+    outline: none;
+}
+
+#contenedor,
+#contenedor2 {
+    position: relative;
+    width: 50%;
+    height: 100%;
+}
+
+.titulo {
+    font-size: initial;
+}
+
+.contenedor__ventanas__minimizadas {
+    height: auto;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: auto;
+}
+
+.contenedor__ventanas__minimizadas__boton {
+    background: #428BCA;
+    border-radius: 100%;
+    height: 30px;
+    width: 30px;
+}
+
+.contenedor__ventanas__minimizadas__desplegable {
+    height: 0;
+    overflow: hidden;
+    -webkit-transition: height 0.35s ease-in-out;
+    -moz-transition: height 0.35s ease-in-out;
+    -ms-transition: height 0.35s ease-in-out;
+    -o-transition: height 0.35s ease-in-out;
+    transition: height 0.35s ease-in-out;
+}
