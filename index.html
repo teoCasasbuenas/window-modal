@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-        <script src="js/modal.component.js" type="text/javascript"></script>
-        <link rel="stylesheet" href="css/modal.component.css">
-        <title>Modal window</title>
-    </head>
-    <body class="font0">
-        <div id="contenedor" class="inline-block">
-            <h3 class="titulo">Contenedor 1</h3>
-        </div>
-        <script type="text/javascript">
-        var modal1 = new Modal("Ventana 1", "contenedor"),
-            modal2 = new Modal("Ventana 2", "contenedor"),
-            modal3 = new Modal("Ventana 3", "contenedor");
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="js/modal.component.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="css/modal.component.css">
+    <title>Modal window</title>
+</head>
+
+<body class="font0">
+    <div id="contenedor" class="inline-block">
+        <h3 class="titulo">Contenedor 1</h3>
+    </div>
+    <div style="display: none">
+        <img id="dummy" src="images/modal-meta.fw.png">
+    </div>
+    <script type="text/javascript">
+    (function() {
+
+        var contenido = $("#dummy");
+        modal1 = new Modal("Ventana 1", "contenedor");
         modal1.show();
         modal1.dragModal();
-        modal2.show();
-        modal2.dragModal();
-        modal3.show();
-        modal3.dragModal(); 
-        
-        </script>
-    </body>
+    })()
+    </script>
+</body>
+
 </html>

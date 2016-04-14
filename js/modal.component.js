@@ -86,12 +86,13 @@ var instanciasModal = new Instances();
 
 var Modal = (function($, instancias) {
     /**
-     *
+     * [Modal description]
      * @param {[type]} tituloModal     [description]
      * @param {[type]} idContenedor    [description]
+     * @param {[type]} contenido       [description]
      * @param {[type]} opcionesUsuario [description]
      */
-    function Modal(tituloModal, idContenedor, opcionesUsuario) {
+    function Modal(tituloModal, idContenedor, contenido, opcionesUsuario) {
         //Opciones por defecto del modal.
         var defaultOptions = {
             ancho: 400,
@@ -113,7 +114,8 @@ var Modal = (function($, instancias) {
             var opciones = that.opciones,
                 rawModal = document.createElement("div"),
                 modal = $(rawModal).addClass('ventanas'),
-                modalHead = that.__createHead();
+                modalHead = that.__createHead(),
+                modalContent = $(document.createElement("div"));
 
             modalHead.find(".ventanas__cabecera--titulo").html(tituloModal);
 
@@ -134,6 +136,9 @@ var Modal = (function($, instancias) {
                     $(this).removeClass('minimizada');
                 }
             });
+
+            //Atamos el evento para hacer resize de las ventanas.
+            modal.resizable({handles: "se"});
 
             $("#" + idContenedor).addClass('ventanas__parent').append(that.modalInstance); //TODO: Obtener el contenedor desde el usuario
 

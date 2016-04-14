@@ -8,18 +8,19 @@ body {
     width: 100%;
 }
 
-@keyframes to-topLeft{
-    80%{
+@keyframes to-topLeft {
+    80% {
         position: absolute;
         top: 0;
         left: 0;
         transform: scale(0.1);
     }
-    100%{
+    100% {
         position: initial;
         transform: scale(0.35);
     }
 }
+
 .font0 {
     font-size: 0;
 }
@@ -32,17 +33,20 @@ body {
 .ventanas {
     border: 1px solid #000;
     border-radius: 3px;
+    box-shadow: ;
     left: 50px;
     overflow: hidden;
     position: absolute;
     top: 100px;
     transform-origin: 0 0;
+    -webkit-box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-.testAnim{
-}
+.testAnim {}
 
-.mini__ventana{
+.mini__ventana {
     -webkit-animation: to-topLeft 0.35s 0s 1 ease-in-out alternate forwards;
     -moz-animation: to-topLeft 0.35s 0s 1 ease-in-out alternate forwards;
     -ms-animation: to-topLeft 0.35s 0s 1 ease-in-out alternate forwards;
@@ -51,7 +55,7 @@ body {
     transform-origin: 0 0;
 }
 
-.mini__ventana__label{
+.mini__ventana__label {
     font-size: 16px;
     text-align: center;
 }
@@ -134,4 +138,3 @@ body {
     -o-transition: height 0.35s ease-in-out;
     transition: height 0.35s ease-in-out;
 }
-
