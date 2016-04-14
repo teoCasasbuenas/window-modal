@@ -20,10 +20,10 @@ var Instances = (function($) {
         this.getInstancia = function(id) {
             return instancias[id];
         };
-        this.setMiniContenedor = function (id, contenedor){
+        this.setMiniContenedor = function(id, contenedor) {
             instancias[id].mini = contenedor;
         };
-        this.getMiniContenedor = function (idInstancia){
+        this.getMiniContenedor = function(idInstancia) {
             return instancias[idInstancia].mini;
         };
 
@@ -172,9 +172,9 @@ var Modal = (function($, instancias) {
                 currInstancia = instancias.getInstancia(idContenedor),
                 miniDiv = $(document.createElement("div"));
             this.modalInstance.addClass("mini__ventana");
-                miniDiv.append(this.modalInstance);
-                miniDiv.css("height", (this.modalInstance.height() * 0.35) + 20);
-                var texto = this.modalInstance.find(".ventanas__cabecera--titulo").html();
+            miniDiv.append(this.modalInstance);
+            miniDiv.css("height", (this.modalInstance.height() * 0.35) + 20);
+            var texto = this.modalInstance.find(".ventanas__cabecera--titulo").html();
             currInstancia.mini.find(".contenedor__ventanas__minimizadas__desplegable").append(miniDiv).append("<label class='mini__ventana__label'>" + texto + "</label>");
             this.modalInstance.dblclick(function(event) {
                 $(this).removeClass('mini__ventana');
