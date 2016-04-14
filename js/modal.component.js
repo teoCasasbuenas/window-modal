@@ -1,9 +1,28 @@
 var Instances = (function($) {
+	/**
+	 * Generador de instancias para alamacenar los contenedores de los modales, las instancias, y referencias a estas.
+	 *
+	 * @class
+	 * @consructor
+	 */
     function Instances() {
         var instancias = {};
+        /**
+         * Retorna las instancias disponibles.
+         *
+         * @method getInstancias
+         * @return {Object} Objeto compuesto por las instancias creadas.
+         */
         this.getInstancias = function() {
             return instancias;
         };
+        /**
+         * Crea una nueva instancia para el contexto seleccionado.
+         *
+         * @method newInstance
+         * @param  {Object} modalParent Objeto contexto.
+         * @return {[type]}             [description]
+         */
         this.newInstance = function(modalParent) {
             var id = modalParent.attr("id");
             if (!instancias.hasOwnProperty(id)) {
@@ -12,17 +31,45 @@ var Instances = (function($) {
                 instancias[id].modales = [];
             }
         };
+        /**
+         * Crea una nueva instancia del modal en el contexto seleccionado.
+         * 
+         * @method setInstanciaModal
+         * @param {object} modal        Objeto modal
+         * @param {[type]} idContenedor El identificador de la instancia que da contexto al contenedor de las ventanas minimizadas.
+         */
         this.setInstanciaModal = function(modal, idContenedor) {
             var id = "modal" + Date.now();
             modal.ID = id;
             instancias[idContenedor].modales.push(modal);
         };
+        /**
+         * Retorna instancia de los modales.
+         * 
+         * @method getInstancia
+         * @param  {string} id El identificador de la instancia.
+         * @return {object}    Instacia requerida.
+         */
         this.getInstancia = function(id) {
             return instancias[id];
         };
+        /**
+         * Crea la instancia para el contenedor de las ventanas minimizadas para el contexto seleccionado.
+         * 
+         * @method setMiniContenedor
+         * @param {string} id         El identificador de la instancia que da contexto al contenedor de las ventanas minimizadas.
+         * @param {object} contenedor Objeto con referencia html
+         */
         this.setMiniContenedor = function (id, contenedor){
             instancias[id].mini = contenedor;
         };
+        /**
+         * Retorna la instancia del contenedor de las ventanas minimizadas para el contexto seleccionado.
+         * 
+         * getMiniContenedor
+         * @param  {string} idInstancia El identificador de la instancia que da contexto al contenedor de las ventanas minimizadas.
+         * @return {object}             Referencia al contenedor.
+         */
         this.getMiniContenedor = function (idInstancia){
             return instancias[idInstancia].mini;
         };
@@ -38,11 +85,12 @@ var Instances = (function($) {
 var instanciasModal = new Instances();
 
 var Modal = (function($, instancias) {
-    /**
-     * @param {[type]}
-     * @param {[type]}
-     * @param {[type]}
-     */
+	/**
+	 * 	
+	 * @param {[type]} tituloModal     [description]
+	 * @param {[type]} idContenedor    [description]
+	 * @param {[type]} opcionesUsuario [description]
+	 */
     function Modal(tituloModal, idContenedor, opcionesUsuario) {
         //Opciones por defecto del modal.
         var defaultOptions = {
@@ -71,7 +119,7 @@ var Modal = (function($, instancias) {
 
             that.modalInstance = modal;
 
-            //Agregamos atributos css al modal
+            //Agregamos atr	ibutos css al modal
             modal.css({
                 "width": opciones.ancho + opciones.unidadMedida,
                 "height": opciones.alto + opciones.unidadMedida,
