@@ -8,6 +8,18 @@ body {
     width: 100%;
 }
 
+@keyframes to-topLeft{
+    80%{
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: scale(0.1);
+    }
+    100%{
+        position: initial;
+        transform: scale(0.35);
+    }
+}
 .font0 {
     font-size: 0;
 }
@@ -24,11 +36,18 @@ body {
     overflow: hidden;
     position: absolute;
     top: 100px;
+    transform-origin: 0 0;
+}
+
+.testAnim{
 }
 
 .mini__ventana{
-    transform: scale(0.35);
-    position: initial;
+    -webkit-animation: to-topLeft 0.35s 0s 1 ease-in-out alternate forwards;
+    -moz-animation: to-topLeft 0.35s 0s 1 ease-in-out alternate forwards;
+    -ms-animation: to-topLeft 0.35s 0s 1 ease-in-out alternate forwards;
+    -o-animation: to-topLeft 0.35s 0s 1 ease-in-out alternate forwards;
+    animation: to-topLeft 0.35s 0s 1 ease-in-out alternate forwards;
     transform-origin: 0 0;
 }
 
@@ -115,3 +134,4 @@ body {
     -o-transition: height 0.35s ease-in-out;
     transition: height 0.35s ease-in-out;
 }
+

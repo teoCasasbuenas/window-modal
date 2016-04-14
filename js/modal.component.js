@@ -1,10 +1,10 @@
 var Instances = (function($) {
-	/**
-	 * Generador de instancias para alamacenar los contenedores de los modales, las instancias, y referencias a estas.
-	 *
-	 * @class
-	 * @consructor
-	 */
+    /**
+     * Generador de instancias para alamacenar los contenedores de los modales, las instancias, y referencias a estas.
+     *
+     * @class
+     * @consructor
+     */
     function Instances() {
         var instancias = {};
         /**
@@ -33,7 +33,7 @@ var Instances = (function($) {
         };
         /**
          * Crea una nueva instancia del modal en el contexto seleccionado.
-         * 
+         *
          * @method setInstanciaModal
          * @param {object} modal        Objeto modal
          * @param {[type]} idContenedor El identificador de la instancia que da contexto al contenedor de las ventanas minimizadas.
@@ -45,7 +45,7 @@ var Instances = (function($) {
         };
         /**
          * Retorna instancia de los modales.
-         * 
+         *
          * @method getInstancia
          * @param  {string} id El identificador de la instancia.
          * @return {object}    Instacia requerida.
@@ -55,22 +55,22 @@ var Instances = (function($) {
         };
         /**
          * Crea la instancia para el contenedor de las ventanas minimizadas para el contexto seleccionado.
-         * 
+         *
          * @method setMiniContenedor
          * @param {string} id         El identificador de la instancia que da contexto al contenedor de las ventanas minimizadas.
          * @param {object} contenedor Objeto con referencia html
          */
-        this.setMiniContenedor = function (id, contenedor){
+        this.setMiniContenedor = function(id, contenedor) {
             instancias[id].mini = contenedor;
         };
         /**
          * Retorna la instancia del contenedor de las ventanas minimizadas para el contexto seleccionado.
-         * 
+         *
          * getMiniContenedor
          * @param  {string} idInstancia El identificador de la instancia que da contexto al contenedor de las ventanas minimizadas.
          * @return {object}             Referencia al contenedor.
          */
-        this.getMiniContenedor = function (idInstancia){
+        this.getMiniContenedor = function(idInstancia) {
             return instancias[idInstancia].mini;
         };
 
@@ -85,12 +85,12 @@ var Instances = (function($) {
 var instanciasModal = new Instances();
 
 var Modal = (function($, instancias) {
-	/**
-	 * 	
-	 * @param {[type]} tituloModal     [description]
-	 * @param {[type]} idContenedor    [description]
-	 * @param {[type]} opcionesUsuario [description]
-	 */
+    /**
+     *
+     * @param {[type]} tituloModal     [description]
+     * @param {[type]} idContenedor    [description]
+     * @param {[type]} opcionesUsuario [description]
+     */
     function Modal(tituloModal, idContenedor, opcionesUsuario) {
         //Opciones por defecto del modal.
         var defaultOptions = {
@@ -218,11 +218,12 @@ var Modal = (function($, instancias) {
         this.minimizar = function() {
             var contenedorMiniVentanas = __getContenedorMiniVentanas(this.modalInstance),
                 currInstancia = instancias.getInstancia(idContenedor),
-                miniDiv = $(document.createElement("div"));
+                miniDiv = $(document.createElement("div")),
+                texto = this.modalInstance.find(".ventanas__cabecera--titulo").html();
+
             this.modalInstance.addClass("mini__ventana");
-                miniDiv.append(this.modalInstance);
-                miniDiv.css("height", (this.modalInstance.height() * 0.35) + 20);
-                var texto = this.modalInstance.find(".ventanas__cabecera--titulo").html();
+            miniDiv.append(this.modalInstance);
+            miniDiv.css("height", (this.modalInstance.height() * 0.35) + 20);
             currInstancia.mini.find(".contenedor__ventanas__minimizadas__desplegable").append(miniDiv).append("<label class='mini__ventana__label'>" + texto + "</label>");
             this.modalInstance.dblclick(function(event) {
                 $(this).removeClass('mini__ventana');
