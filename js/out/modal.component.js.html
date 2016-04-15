@@ -1,4 +1,32 @@
-var Instances = (function($) {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: modal.component.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: modal.component.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var Instances = (function($) {
     /**
      * Generador de instancias para alamacenar los contenedores de los modales, las instancias, y referencias a estas.
      *
@@ -141,7 +169,7 @@ var Modal = (function($, instancias) {
                 rawModal = document.createElement("div"),
                 modal = $(rawModal).addClass('ventanas'),
                 modalHead = that.__createHead(),
-                modalContent = $(document.createElement("div")).addClass('ventanas__contenido');
+                modalContent = $(document.createElement("div"));
 
             modalHead.find(".ventanas__cabecera--titulo").html(tituloModal);
 
@@ -154,11 +182,10 @@ var Modal = (function($, instancias) {
                 "backgroundColor": opciones.backgroundColor
             });
 
-            __getContenido(modalContent, configContenido);
+
 
             //Agregamos los elementos al modal
             modal.append(modalHead);
-            modal.append(modalContent);
 
             modal.dblclick(function() {
                 if ($(this).hasClass('minimizada')) {
@@ -168,18 +195,13 @@ var Modal = (function($, instancias) {
 
             //Atamos el evento para hacer resize de las ventanas.
             modal.resizable({
-                handles: "se",
-                start: function(event, ui){
-                    modalContent.getNiceScroll().remove();
-                },
-                stop: function(event, ui){
-                    modalContent.niceScroll();
-                }
+                handles: "se"
             });
 
             $("#" + idContenedor).addClass('ventanas__parent').append(that.modalInstance); //TODO: Obtener el contenedor desde el usuario
 
             instancias.newInstance($("#" + idContenedor));
+
 
 
             return modal;
@@ -191,33 +213,8 @@ var Modal = (function($, instancias) {
          * @param  {Object} configObject [description]
          * @return {Object}              [description]
          */
-        function __getContenido(modalContent, configObject) {
-            console.log(configObject);
-            console.log(modalContent);
-            if (configObject.hasOwnProperty("tipo")) {
-                var tipo = configObject.tipo,
-                    contenido = null;
-                switch (tipo){
-                    case "DOM":
-                    console.log("DOM");
-                        if(configObject.hasOwnProperty("selector")){
-                            console.log(selector);
-                            var selector = configObject.selector;
-                            contenido = $("#" + selector).clone().css("width", "100%");
-                            if(contenido.length === 0){
-                                console.error("No existe el contenido con el indentificador específicado.")
-                            }
-                        }else{
-                            console.error("Para cargar contenido es necesaria la propiedad selector con el id del elemento.");
-                        }
-                        break;
-                }
+        function __getContenido(modalContent, configObject){
 
-            } else {
-                console.error("El atributo tipo debe estar definido en la configuración.");
-            }
-
-            modalContent.append(contenido);
         }
 
 
@@ -280,7 +277,7 @@ var Modal = (function($, instancias) {
             miniDiv.css("height", (this.modalInstance.height() * 0.35) + 20);
 
             var texto = this.modalInstance.find(".ventanas__cabecera--titulo").html();
-            currInstancia.mini.find(".contenedor__ventanas__minimizadas__desplegable").append(miniDiv).append("<label class='mini__ventana__label'>" + texto + "</label>");
+            currInstancia.mini.find(".contenedor__ventanas__minimizadas__desplegable").append(miniDiv).append("&lt;label class='mini__ventana__label'>" + texto + "&lt;/label>");
             this.modalInstance.dblclick(function(event) {
                 $(this).removeClass('mini__ventana');
                 miniDiv.next(".mini__ventana__label").remove();
@@ -295,9 +292,7 @@ var Modal = (function($, instancias) {
         constructor: Modal,
         show: function() {
             var modalInstance = this.construir(),
-                idContenedor = modalInstance.closest('.ventanas__parent').attr("id"),
-                contenido = modalInstance.find('.ventanas__contenido');
-                contenido.niceScroll();
+                idContenedor = modalInstance.closest('.ventanas__parent').attr("id");
             instancias.setInstanciaModal(modalInstance, idContenedor);
         },
         destroy: function() {
@@ -330,4 +325,26 @@ var Modal = (function($, instancias) {
     }
 
     return Modal;
-})(jQuery, window.instanciasModal || (window.instanciasModal = {}));
+})(jQuery, window.instanciasModal || (window.instanciasModal = {}));</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#getInstancia">getInstancia</a></li><li><a href="global.html#getInstancias">getInstancias</a></li><li><a href="global.html#newInstance">newInstance</a></li><li><a href="global.html#setInstanciaModal">setInstanciaModal</a></li><li><a href="global.html#setMiniContenedor">setMiniContenedor</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Apr 14 2016 20:21:17 GMT-0500 (Hora est. Pacífico, Sudamérica)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
