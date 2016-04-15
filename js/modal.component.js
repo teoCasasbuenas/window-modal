@@ -53,11 +53,6 @@ var Instances = (function($) {
         this.getInstancia = function(id) {
             return instancias[id];
         };
-<<<<<<< HEAD:modal.component.js
-        this.setMiniContenedor = function(id, contenedor) {
-            instancias[id].mini = contenedor;
-        };
-=======
         /**
          * Crea la instancia para el contenedor de las ventanas minimizadas para el contexto seleccionado.
          *
@@ -75,7 +70,6 @@ var Instances = (function($) {
          * @param  {string} idInstancia El identificador de la instancia que da contexto al contenedor de las ventanas minimizadas.
          * @return {object}             Referencia al contenedor.
          */
->>>>>>> 2565587835f9d596c1f3b23df362e0457ba76251:js/modal.component.js
         this.getMiniContenedor = function(idInstancia) {
             return instancias[idInstancia].mini;
         };
@@ -235,10 +229,8 @@ var Modal = (function($, instancias) {
             this.modalInstance.addClass("mini__ventana");
             miniDiv.append(this.modalInstance);
             miniDiv.css("height", (this.modalInstance.height() * 0.35) + 20);
-<<<<<<< HEAD:modal.component.js
+            
             var texto = this.modalInstance.find(".ventanas__cabecera--titulo").html();
-=======
->>>>>>> 2565587835f9d596c1f3b23df362e0457ba76251:js/modal.component.js
             currInstancia.mini.find(".contenedor__ventanas__minimizadas__desplegable").append(miniDiv).append("<label class='mini__ventana__label'>" + texto + "</label>");
             this.modalInstance.dblclick(function(event) {
                 $(this).removeClass('mini__ventana');
