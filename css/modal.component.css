@@ -6,6 +6,9 @@ body {
     position: relative;
     height: 100%;
     width: 100%;
+    font-size: 16px;
+    font-family: 'Lato', sans-serif;
+    margin: 0;
 }
 
 @keyframes to-topLeft {
@@ -149,26 +152,26 @@ body {
     0% {
         border-radius: 0;
     }
-    25%{
+    25% {
         border-radius: 0;
         height: 25px;
         width: 25px;
-        top:75%;
-        left:75%;
+        top: 75%;
+        left: 75%;
     }
-    50%{
+    50% {
         top: 100%;
         left: 100%;
         border-radius: 0;
         height: 0px;
         width: 0px;
     }
-    75%{
+    75% {
         border-radius: 100%;
         height: 25px;
         width: 25px;
-        top:75%;
-        left:75%;
+        top: 75%;
+        left: 75%;
     }
     100% {
         border-radius: 100%;
@@ -176,43 +179,44 @@ body {
         width: 50px;
     }
 }
-@keyframes to-arrow{
-    100%{
+
+@keyframes to-arrow {
+    100% {
         border-bottom: 0px solid green;
     }
 }
 
-@keyframes hidden-first{
-    0%{
-
+@keyframes hidden-first {
+    0% {
         visibility: hidden;
     }
-    25%{
+    25% {
         visibility: hidden;
     }
-    50%{
+    50% {
         visibility: visible;
     }
-    100%{
+    100% {
         visibility: visible;
     }
 }
-@keyframes hidden-last{
-    0%{
 
+@keyframes hidden-last {
+    0% {
         visibility: visible;
     }
-    25%{
+    25% {
         visibility: visible;
     }
-    50%{
+    50% {
         visibility: hidden;
     }
-    100%{
+    100% {
         visibility: hidden;
     }
 }
-.to-circle{
+
+.to-circle {
     height: 50px;
     position: absolute;
     width: 50px;
@@ -221,23 +225,24 @@ body {
     margin-left: -25px;
     margin-top: -25px;
     background: #29C1DF;
-    animation: shrink-grow-circle 1s 0s infinite linear alternate,
-                hidden-last 4s 0s infinite linear;;
+    animation: shrink-grow-circle 1s 0s infinite linear alternate, hidden-last 4s 0s infinite linear;
+    ;
 }
-.to-circle2{
+
+.to-circle2 {
     height: 50px;
     width: 50px;
     background: green;
-    animation: shrink-grow-circle 1s 0s infinite linear alternate,
-                hidden-first 4s 0s infinite linear;
-                position: absolute;
+    animation: shrink-grow-circle 1s 0s infinite linear alternate, hidden-first 4s 0s infinite linear;
+    position: absolute;
     width: 50px;
     top: 50%;
     left: 50%;
     margin-left: -25px;
     margin-top: -25px;
 }
-.reference{
+
+.reference {
     position: absolute;
     background: black;
     top: 50%;
@@ -248,12 +253,12 @@ body {
     width: 3px;
     z-index: 100;
 }
+
 .arrow-up {
     width: 0;
     height: 0;
     border-left: 50px solid transparent;
     border-right: 50px solid transparent;
     border-bottom: 50px solid green;
-    animation: to-arrow 1s 0s infinite linear alternate,
-                hidden-first 4s 0s infinite linear;
+    animation: to-arrow 1s 0s infinite linear alternate, hidden-first 4s 0s infinite linear;
 }

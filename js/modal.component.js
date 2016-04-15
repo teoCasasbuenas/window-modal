@@ -1,4 +1,4 @@
-var Instances = (function($) {
+var Instances = (function($, store) {
     /**
      * Generador de instancias para alamacenar los contenedores de los modales, las instancias, y referencias a estas.
      *
@@ -6,7 +6,32 @@ var Instances = (function($) {
      * @consructor
      */
     function Instances() {
-        var instancias = {};
+        var instancias = {},
+            objLocation = window.location,
+            modalLS = objLocation.pathname + objLocation.search;
+        //Verificamoºs que el local storage esté disponible;
+        if (!store.enabled) {
+            alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
+            return
+        } else {
+            instancias.LSinstance = store.get(modalLS); //Verificar si el hash es utilizable para los contextos.
+
+            //Verificamos que exista una instancia del contexto window.location en local storage.
+            if (instancias.LSinstance === undefined) {
+                store.set(modalLS, {});
+                instancias.LSinstance = store.get(modalLS);
+            }else{
+                __construirVentanas(instancias.LSinstance);
+            }
+        }
+
+        function __construirVentanas(localInstances){
+            var i = 1;
+            for(var inst in localInstances){
+                config = localInstances[inst];
+            }
+        }
+
         /**
          * Retorna las instancias disponibles.
          *
@@ -41,7 +66,22 @@ var Instances = (function($) {
             var id = "modal" + Date.now();
             modal.ID = id;
             instancias[idContenedor].modales.push(modal);
+            instancias.LSinstance[id] = modal.storeConfig;
+            store.set(modalLS, instancias.LSinstance);
         };
+        /**
+         * [getInstanciaModal description]
+         * @param  {[type]} idModal      [description]
+         * @param  {[type]} idContenedor [description]
+         * @return {[type]}              [description]
+         */
+        this.getInstanciaModal = function(idModal, idContenedor) {
+            var instancia = instancias[idContenedor].modales,
+                modal = $.grep(instancia, function(e) {
+                    return e.ID === idModal
+                });
+            return modal;
+        }
         /**
          * Retorna instancia de los modales.
          *
@@ -79,7 +119,7 @@ var Instances = (function($) {
         constructor: Instances
     }
     return Instances;
-})(jQuery);
+})(jQuery, store);
 
 var instanciasModal = new Instances();
 
@@ -105,6 +145,7 @@ var Modal = (function($, instancias) {
         //Propiedades.
         this.opciones = $.extend(defaultOptions, opcionesUsuario);
         this.modalInstance = {};
+
 
         this.__createHead = function() {
             var $t = this,
@@ -147,6 +188,17 @@ var Modal = (function($, instancias) {
 
             that.modalInstance = modal;
 
+            //TODO: crear constructor para la hacer la configuración con constructor
+            that.modalInstance.storeConfig = {
+                tipo: configContenido.tipo,
+                selector: (configContenido.hasOwnProperty("selector")) ? configContenido.selector : null,
+                url: (configContenido.hasOwnProperty("url")) ? configContenido.url : null,
+                idContexto: idContenedor,
+                titulo: tituloModal,
+                ancho: that.opciones.ancho,
+                alto: that.opciones.alto,
+                unidadMedida: that.opciones.unidadMedida
+            }
             //Agregamos atributos css al modal
             modal.css({
                 "width": opciones.ancho + opciones.unidadMedida,
@@ -169,11 +221,14 @@ var Modal = (function($, instancias) {
             //Atamos el evento para hacer resize de las ventanas.
             modal.resizable({
                 handles: "se",
-                start: function(event, ui){
+                start: function(event, ui) {
                     modalContent.getNiceScroll().remove();
                 },
-                stop: function(event, ui){
+                stop: function(event, ui) {
                     modalContent.niceScroll();
+                    that.storeConfig.ancho = ui.size.width;
+                    that.storeConfig.alto = ui.size.height;
+                    that.storeConfig.unidadMedida = "px";
                 }
             });
 
@@ -192,23 +247,31 @@ var Modal = (function($, instancias) {
          * @return {Object}              [description]
          */
         function __getContenido(modalContent, configObject) {
-            console.log(configObject);
-            console.log(modalContent);
             if (configObject.hasOwnProperty("tipo")) {
                 var tipo = configObject.tipo,
                     contenido = null;
-                switch (tipo){
+                //TODO: Registrar eventos. (Si es posible, hacerlo en local storage.)
+                switch (tipo) {
                     case "DOM":
-                    console.log("DOM");
-                        if(configObject.hasOwnProperty("selector")){
+                        if (configObject.hasOwnProperty("selector")) {
                             console.log(selector);
                             var selector = configObject.selector;
                             contenido = $("#" + selector).clone().css("width", "100%");
-                            if(contenido.length === 0){
+                            if (contenido.length === 0) {
                                 console.error("No existe el contenido con el indentificador específicado.")
                             }
-                        }else{
+                        } else {
                             console.error("Para cargar contenido es necesaria la propiedad selector con el id del elemento.");
+                        }
+                        break;
+                    case "GET":
+                        if (configObject.hasOwnProperty("url")) {
+                            var url = configObject.url;
+                            $.get(url, function(data) {
+                                contenido = data;
+                            });
+                        } else {
+                            console.error("Para cargar contenido es necesaria la propiedad url con una URL válida.");
                         }
                         break;
                 }
@@ -216,8 +279,9 @@ var Modal = (function($, instancias) {
             } else {
                 console.error("El atributo tipo debe estar definido en la configuración.");
             }
-
-            modalContent.append(contenido);
+            setTimeout(function() {
+                modalContent.append(contenido);
+            }, 3000);
         }
 
 
@@ -297,7 +361,7 @@ var Modal = (function($, instancias) {
             var modalInstance = this.construir(),
                 idContenedor = modalInstance.closest('.ventanas__parent').attr("id"),
                 contenido = modalInstance.find('.ventanas__contenido');
-                contenido.niceScroll();
+            contenido.niceScroll();
             instancias.setInstanciaModal(modalInstance, idContenedor);
         },
         destroy: function() {
