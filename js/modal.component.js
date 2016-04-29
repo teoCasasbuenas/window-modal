@@ -1,4 +1,4 @@
-var Instances = (function($, store) {
+var Instances = (function ($, store) {
     /**
      * Generador de instancias para alamacenar los contenedores de los modales, las instancias, y referencias a estas.
      *
@@ -20,14 +20,14 @@ var Instances = (function($, store) {
             if (instancias.LSinstance === undefined) {
                 store.set(modalLS, {});
                 instancias.LSinstance = store.get(modalLS);
-            }else{
+            } else {
                 __construirVentanas(instancias.LSinstance);
             }
         }
 
-        function __construirVentanas(localInstances){
+        function __construirVentanas(localInstances) {
             var i = 1;
-            for(var inst in localInstances){
+            for (var inst in localInstances) {
                 config = localInstances[inst];
             }
         }
@@ -38,7 +38,7 @@ var Instances = (function($, store) {
          * @method getInstancias
          * @return {Object} Objeto compuesto por las instancias creadas.
          */
-        this.getInstancias = function() {
+        this.getInstancias = function () {
             return instancias;
         };
         /**
@@ -47,7 +47,7 @@ var Instances = (function($, store) {
          * @method newInstance
          * @param  {Object} modalParent Objeto contexto
          */
-        this.newInstance = function(modalParent) {
+        this.newInstance = function (modalParent) {
             var id = modalParent.attr("id");
             if (!instancias.hasOwnProperty(id)) {
                 instancias[id] = {};
@@ -62,7 +62,7 @@ var Instances = (function($, store) {
          * @param {object} modal        Objeto modal
          * @param {string} idContenedor El identificador de la instancia que da contexto al contenedor de las ventanas minimizadas.
          */
-        this.setInstanciaModal = function(modal, idContenedor) {
+        this.setInstanciaModal = function (modal, idContenedor) {
             var id = "modal" + Date.now();
             modal.ID = id;
             instancias[idContenedor].modales.push(modal);
@@ -75,9 +75,9 @@ var Instances = (function($, store) {
          * @param  {[type]} idContenedor [description]
          * @return {[type]}              [description]
          */
-        this.getInstanciaModal = function(idModal, idContenedor) {
+        this.getInstanciaModal = function (idModal, idContenedor) {
             var instancia = instancias[idContenedor].modales,
-                modal = $.grep(instancia, function(e) {
+                modal = $.grep(instancia, function (e) {
                     return e.ID === idModal
                 });
             return modal;
@@ -89,7 +89,7 @@ var Instances = (function($, store) {
          * @param  {string} id El identificador de la instancia.
          * @return {object}    Instacia requerida.
          */
-        this.getInstancia = function(id) {
+        this.getInstancia = function (id) {
             return instancias[id];
         };
         /**
@@ -99,7 +99,7 @@ var Instances = (function($, store) {
          * @param {string} id         El identificador de la instancia que da contexto al contenedor de las ventanas minimizadas.
          * @param {object} contenedor Objeto con referencia html
          */
-        this.setMiniContenedor = function(id, contenedor) {
+        this.setMiniContenedor = function (id, contenedor) {
             instancias[id].mini = contenedor;
         };
         /**
@@ -109,7 +109,7 @@ var Instances = (function($, store) {
          * @param  {string} idInstancia El identificador de la instancia que da contexto al contenedor de las ventanas minimizadas.
          * @return {object}             Referencia al contenedor.
          */
-        this.getMiniContenedor = function(idInstancia) {
+        this.getMiniContenedor = function (idInstancia) {
             return instancias[idInstancia].mini;
         };
 
@@ -123,11 +123,11 @@ var Instances = (function($, store) {
 
 var instanciasModal = new Instances();
 
-var Modal = (function($, instancias) {
+var Modal = (function ($, instancias) {
     /**
      * [Modal description]
      * @param {String} tituloModal     [description]
-     * @param {String} idContenedor    [description]
+     * @param {String} idContenedor    El contexto en el que se instanciara el modal.
      * @param {Object} contenido       [description]
      * @param {Object} opcionesUsuario [description]
      */
@@ -138,7 +138,11 @@ var Modal = (function($, instancias) {
             unidadMedida: "px",
             alto: 200,
             padding: 20,
-            backgroundColor: "#FFF"
+            backgroundColor: "#FFF",
+            posicion: "fixed",
+            onLoad: function () {
+                return false;
+            }
         };
 
 
@@ -147,7 +151,7 @@ var Modal = (function($, instancias) {
         this.modalInstance = {};
 
 
-        this.__createHead = function() {
+        this.__createHead = function () {
             var $t = this,
                 cabecera = $(document.createElement("header")).addClass("font0 ventanas__cabecera"),
                 cabeceraContenedorBotones = $(document.createElement("div")).addClass("inline-block ventanas__cabecera--contenedor-botones"),
@@ -156,10 +160,10 @@ var Modal = (function($, instancias) {
                 botonMinimizar = $(document.createElement("button")).addClass('minimizar-modal ventanas__cabecera--contenedor-botones__boton').html('_');
 
             //Acciones de los botones.
-            botonCerrar.on("click", function() {
+            botonCerrar.on("click", function () {
                 $t.destroy();
             });
-            botonMinimizar.on("click", function() {
+            botonMinimizar.on("click", function () {
                 $t.minimizar();
             });
 
@@ -177,7 +181,7 @@ var Modal = (function($, instancias) {
         }
 
         //Métodos privados.
-        var doConstruir = function(that) {
+        var doConstruir = function (that) {
             var opciones = that.opciones,
                 rawModal = document.createElement("div"),
                 modal = $(rawModal).addClass('ventanas'),
@@ -203,16 +207,20 @@ var Modal = (function($, instancias) {
             modal.css({
                 "width": opciones.ancho + opciones.unidadMedida,
                 "height": opciones.alto + opciones.unidadMedida,
-                "backgroundColor": opciones.backgroundColor
+                "backgroundColor": opciones.backgroundColor,
+                "position": opciones.posicion,
+                "z-index": 9999
             });
 
-            __getContenido(modalContent, configContenido);
+
+
+            __getContenido(modalContent, configContenido, opciones.onLoad);
 
             //Agregamos los elementos al modal
             modal.append(modalHead);
             modal.append(modalContent);
 
-            modal.dblclick(function() {
+            modal.dblclick(function () {
                 if ($(this).hasClass('minimizada')) {
                     $(this).removeClass('minimizada');
                 }
@@ -221,21 +229,20 @@ var Modal = (function($, instancias) {
             //Atamos el evento para hacer resize de las ventanas.
             modal.resizable({
                 handles: "se",
-                start: function(event, ui) {
+                start: function (event, ui) {
                     modalContent.getNiceScroll().remove();
                 },
-                stop: function(event, ui) {
+                stop: function (event, ui) {
                     modalContent.niceScroll();
-                    that.storeConfig.ancho = ui.size.width;
-                    that.storeConfig.alto = ui.size.height;
-                    that.storeConfig.unidadMedida = "px";
+                    that.modalInstance.storeConfig.ancho = ui.size.width;
+                    that.modalInstance.storeConfig.alto = ui.size.height;
+                    that.modalInstance.storeConfig.unidadMedida = "px";
                 }
             });
 
             $("#" + idContenedor).addClass('ventanas__parent').append(that.modalInstance); //TODO: Obtener el contenedor desde el usuario
 
             instancias.newInstance($("#" + idContenedor));
-
 
             return modal;
         }
@@ -246,7 +253,7 @@ var Modal = (function($, instancias) {
          * @param  {Object} configObject [description]
          * @return {Object}              [description]
          */
-        function __getContenido(modalContent, configObject) {
+        function __getContenido(modalContent, configObject, callback) {
             if (configObject.hasOwnProperty("tipo")) {
                 var tipo = configObject.tipo,
                     contenido = null;
@@ -257,6 +264,7 @@ var Modal = (function($, instancias) {
                             console.log(selector);
                             var selector = configObject.selector;
                             contenido = $("#" + selector).clone().css("width", "100%");
+                            modalContent.append(contenido);
                             if (contenido.length === 0) {
                                 console.error("No existe el contenido con el indentificador específicado.")
                             }
@@ -267,21 +275,21 @@ var Modal = (function($, instancias) {
                     case "GET":
                         if (configObject.hasOwnProperty("url")) {
                             var url = configObject.url;
-                            $.get(url, function(data) {
+                            $.get(url).promise().then(function (data) {
                                 contenido = data;
+                                modalContent.append(contenido);
+
+                                callback();
                             });
                         } else {
                             console.error("Para cargar contenido es necesaria la propiedad url con una URL válida.");
                         }
                         break;
                 }
-
             } else {
                 console.error("El atributo tipo debe estar definido en la configuración.");
             }
-            setTimeout(function() {
-                modalContent.append(contenido);
-            }, 3000);
+            console.log(contenido);
         }
 
 
@@ -299,14 +307,14 @@ var Modal = (function($, instancias) {
 
                 contenedorMiniVentanas = $(document.createElement("div")).addClass('contenedor__ventanas__minimizadas');
 
-                boton.on("click", function() {
+                boton.on("click", function () {
                     if (contenedorDesplegable.hasClass('desplegado')) {
                         contenedorDesplegable.removeClass('desplegado');
                         contenedorDesplegable.css("height", "0px");
                     } else {
                         contenedorDesplegable.addClass('desplegado');
                         var altura = 0;
-                        contenedorDesplegable.find("div").each(function(index, el) {
+                        contenedorDesplegable.find("div").each(function (index, el) {
                             altura += $(this).height();
                         });
                         contenedorDesplegable.css("height", altura + "px");
@@ -325,15 +333,16 @@ var Modal = (function($, instancias) {
         }
 
         //Métodos
-        this.construir = function() {
+        this.construir = function () {
             return doConstruir(this);
         }
 
-        this.destruir = function() {
+        this.destruir = function () {
+            this.modalInstance.find(".ventanas__contenido").getNiceScroll().remove();
             this.modalInstance.remove();
         }
 
-        this.minimizar = function() {
+        this.minimizar = function () {
             var contenedorMiniVentanas = __getContenedorMiniVentanas(this.modalInstance),
                 currInstancia = instancias.getInstancia(idContenedor),
                 miniDiv = $(document.createElement("div")),
@@ -345,7 +354,7 @@ var Modal = (function($, instancias) {
 
             var texto = this.modalInstance.find(".ventanas__cabecera--titulo").html();
             currInstancia.mini.find(".contenedor__ventanas__minimizadas__desplegable").append(miniDiv).append("<label class='mini__ventana__label'>" + texto + "</label>");
-            this.modalInstance.dblclick(function(event) {
+            this.modalInstance.dblclick(function (event) {
                 $(this).removeClass('mini__ventana');
                 miniDiv.next(".mini__ventana__label").remove();
                 currInstancia.contexto.append($(this));
@@ -357,17 +366,17 @@ var Modal = (function($, instancias) {
 
     Modal.prototype = {
         constructor: Modal,
-        show: function() {
+        show: function () {
             var modalInstance = this.construir(),
                 idContenedor = modalInstance.closest('.ventanas__parent').attr("id"),
                 contenido = modalInstance.find('.ventanas__contenido');
             contenido.niceScroll();
             instancias.setInstanciaModal(modalInstance, idContenedor);
         },
-        destroy: function() {
+        destroy: function () {
             this.destruir();
         },
-        dragModal: function() {
+        dragModal: function () {
             var instanciaModal = this.modalInstance,
                 modal = $(this.modalInstance),
                 contenedor = this.modalInstance.closest('.ventanas__parent'),
@@ -375,18 +384,21 @@ var Modal = (function($, instancias) {
                 opcionesDraggable = {
                     handle: cabecera,
                     containment: contenedor,
-                    drag: function(event, ui) {},
-                    start: function(event, ui) {},
-                    stop: function(event, ui) {
+                    drag: function (event, ui) { },
+                    start: function (event, ui) {
+                        modal.find(".ventanas__contenido").getNiceScroll().remove();
+                    },
+                    stop: function (event, ui) {
+                        modal.find(".ventanas__contenido").niceScroll();
                         modal.css("z-index", 101);
                         //var modalInst = instancias.getInstacia(instanciaModal.ID);
 
                     }
                 };
             $(this.modalInstance).draggable(opcionesDraggable);
-            modal.on("mousedown", function() {
+            modal.on("mousedown", function () {
                 $(this).css("z-index", 9999);
-                $(".ventanas").not(modal).each(function() {
+                $(".ventanas").not(modal).each(function () {
                     $(this).css("z-index", 100);
                 });
             });
